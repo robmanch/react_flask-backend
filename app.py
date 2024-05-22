@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import ssl
 
 app = Flask(__name__)
 CORS(app)
@@ -13,4 +14,6 @@ def add_numbers():
     return jsonify({'result': result})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    context.load_cert_chain('cert.pem', 'key.pem')
+    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context=context)
